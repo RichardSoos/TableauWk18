@@ -7,7 +7,7 @@ api_endpoint = "https://maps.googleapis.com/maps/api/elevation/json"
 # api_endpoint = "https://maps.googleapis.com/maps/api/elevation"
 
 # Define your Google Elevation API key
-api_key = "AIzaSyB5uqam59EqOQ2cxEppCddBVvN-BlC1sAA"
+//api_key = excluded
 
 # Specify the input CSV file path and output CSV file path
 input_file = "C:/Users/soosr/Documents/AllHomework/TableauWK18Challenge/All_loc.csv"
