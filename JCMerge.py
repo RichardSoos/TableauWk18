@@ -1,0 +1,36 @@
+import pandas as pd
+
+# Read the existing CSV file with ride data
+ride_data = pd.read_csv('JC-202305-citibike-tripdata.csv')
+
+# Read the file with reduced latitude, longitude, and height data
+reduced_data = pd.read_csv('All_height_loc.csv')
+
+# Round the start_lat and start_lng to 3 decimal places
+ride_data['rounded_start_lat'] = ride_data['start_lat'].round(3)
+ride_data['rounded_start_lng'] = ride_data['start_lng'].round(3)
+
+# Round the end_lat and end_lng to 3 decimal places
+ride_data['rounded_end_lat'] = ride_data['end_lat'].round(3)
+ride_data['rounded_end_lng'] = ride_data['end_lng'].round(3)
+
+# Merge the ride data with the reduced data based on rounded latitude and longitude for start_height
+ride_data = pd.merge(ride_data, reduced_data[['reduced_lat', 'reduced_lng', 'height']],
+                     left_on=['rounded_start_lat', 'rounded_start_lng'],
+                     right_on=['reduced_lat', 'reduced_lng'],
+                     how='left')
+
+# Rename the height column to start_height
+ride_data = ride_data.rename(columns={'height': 'start_height'})
+
+# Merge the ride data with the reduced data based on rounded latitude and longitude for end_height
+ride_data = pd.merge(ride_data, reduced_data[['reduced_lat', 'reduced_lng', 'height']],
+                     left_on=['rounded_end_lat', 'rounded_end_lng'],
+                     right_on=['reduced_lat', 'reduced_lng'],
+                     how='left')
+
+# Rename the height column to end_height
+ride_data = ride_data.rename(columns={'height': 'end_height'})
+
+# Save the updated ride data to a new CSV file
+ride_data.to_csv('JCCLEANED_data.csv', index=False)
